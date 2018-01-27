@@ -6,11 +6,17 @@
 package graphs;
 
 /**
+ * Clase de excepción para las operaciones con grafos
  *
  * @author Reyes Ruiz
  */
 public class GraphException extends Exception {
 
+    /**
+     * Crea una excepción con el mensaje especificado
+     *
+     * @param message El mensaje a mostrar
+     */
     public GraphException(String message) {
         super(message);
     }

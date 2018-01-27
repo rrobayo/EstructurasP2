@@ -8,6 +8,7 @@ package geometry;
 import com.sun.javafx.geom.Point2D;
 
 /**
+ * Modela un Punto en el espacio bidimensional.
  *
  * @author Reyes Ruiz
  */
@@ -18,22 +19,34 @@ public class Punto {
 
     private static final float EQUALS_EPSILON = 1e-10f;
 
+    /**
+     * Crea un Punto con las coordenadas dadas
+     *
+     * @param x La coordenada X del Punto
+     * @param y La coordenada Y del Punto
+     */
     public Punto(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Crea una copia de un Punto
+     *
+     * @param p El Punto a clonar
+     */
     public Punto(Punto p) {
         this.x = p.getX();
         this.y = p.getY();
     }
 
     /**
-     * Procesa una cadena en el formato "(<num1>, <num2>)" y devuelve el punto
-     * que representa
+     * Procesa una cadena en el formato "(&lt;num1&gt;,&lt;num2&gt;)" y devuelve
+     * el punto que representa
      *
-     * @param str
-     * @return
+     * @param str La cadena a procesar
+     * @return el Punto representado por la cadena, o una excepción si la cadena
+     * está malformada
      */
     public static Punto parse(String str) {
         String strX = str.split(",")[0];
@@ -60,6 +73,12 @@ public class Punto {
         this.y = y;
     }
 
+    /**
+     * Calcula la distancia euclidiana entre dos Puntos
+     *
+     * @param otro El Punto cuya distancia a éste se va a calcular
+     * @return la distancia euclidiana entre los Puntos dados
+     */
     public float getDistancia(Punto otro) {
         return Point2D.distance(x, y, otro.getX(), otro.getY());
     }
@@ -93,6 +112,17 @@ public class Punto {
                 && Math.abs(this.y - other.y) < EQUALS_EPSILON;
     }
 
+    /**
+     * Devuelve una copia del Punto, movido a lo largo de la línea que va desde
+     * <code>centro</code> hasta el Punto, una longitud <code>longitud</code>.
+     * Si <code>longitud</code> es positiva, el Punto se aleja de
+     * <code>centro</code>
+     *
+     * @param centro El Punto a usar como centro de referencia
+     * @param longitud La distancia que se desea mover el
+     * @return una copia del Punto, alejado <code>longitud</code> unidades del
+     * <code>centro</code>
+     */
     public Punto extender(Punto centro, float longitud) {
         Linea l = new Linea(new Punto(centro), new Punto(this));
         l.extender(longitud);

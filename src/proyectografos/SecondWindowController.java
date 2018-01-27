@@ -42,6 +42,14 @@ public class SecondWindowController implements Initializable {
         // Nada que hacer aquí
     }
 
+    /**
+     * Llamar después de instanciar una ventana, para preparar los datos
+     * necesarios
+     *
+     * @param visuales El grafo de visibilidad que se va a mostrar
+     * @param ruta La ruta del robot
+     * @param referencias Los obstáculos reales, para mostrar de fondo
+     */
     public void initData(GrafoP<Punto> visuales, List<Punto> ruta, List<Poligono> referencias) {
         this.visuales = visuales;
         this.ruta = ruta;

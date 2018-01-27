@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Modela un grafo dirigido o no dirigido con pesos
  *
  * @author Reyes Ruiz
  */
@@ -21,14 +22,30 @@ public class GrafoP<T> {
     private float[][] matrizAdy;
     private final boolean dirigido;
 
+    /**
+     * Crea un grafo vacío que puede contener máximo 20 vértices
+     */
     public GrafoP() {
         this(20, false);
     }
 
+    /**
+     * Crea un grafo vacío que puede contener máximo <code>maxVertices</code>
+     * vértices
+     *
+     * @param maxVertices El número máximo de vértices
+     */
     public GrafoP(int maxVertices) {
         this(maxVertices, false);
     }
 
+    /**
+     * Crea un grafo vacío que puede contener máximo <code>maxVertices</code>
+     * vértices, especificando si es o no dirigido
+     *
+     * @param maxVertices El número máximo de vértices
+     * @param dirigido Si el grafo es dirigido o no dirigido
+     */
     public GrafoP(int maxVertices, boolean dirigido) {
         this.maxVertices = maxVertices;
         this.dirigido = dirigido;
@@ -42,10 +59,22 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Retorna la lista de vértices del grafo (ATENCIÓN: no una copia!)
+     *
+     * @return una Lista que contiene los vértices del grafo
+     */
     public List<T> getVertices() {
         return vertices;
     }
 
+    /**
+     * Retorna la lista de aristas del grafo (aristas con peso MAYOR a cero)
+     *
+     * @return una Lista de Listas de T. Cada elemento es una lista de
+     * EXACTAMENTE 2 elementos, que son los elementos de origen y destino de la
+     * arista
+     */
     public List<List<T>> getAristas() {
         List<List<T>> aristas = new LinkedList<>();
         for (int i = 0; i < vertices.size(); i++) {
@@ -62,6 +91,13 @@ public class GrafoP<T> {
         return vertices.indexOf(v);
     }
 
+    /**
+     * Agrega un vértice nuevo al grafo
+     *
+     * @param v El elemento a agregar al grafo
+     * @throws GraphException si no se pueden agregar más vértices o si un
+     * elemento idéntico ya existe
+     */
     public void agregarVertice(T v) throws GraphException {
         if (vertices.size() >= maxVertices) {
             throw new GraphException("Matriz ya tiene el número máximo de vértices");
@@ -73,6 +109,14 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Agrega una arista nueva al grafo
+     *
+     * @param v1 El vértice de origen de la arista
+     * @param v2 El vértice de destino de la arista
+     * @param peso El peso de la arista
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public void agregarArco(T v1, T v2, float peso) throws GraphException {
         agregarArcoIndices(numVertice(v1), numVertice(v2), peso);
     }
@@ -87,6 +131,16 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Prueba si los vértices dados son adyacentes (si existe una arista que los
+     * conecta)
+     *
+     * @param v1 El vértice de origen de la arista
+     * @param v2 El vértice de destino de la arista
+     * @return <code>true</code> si existe una arista que conecta los vértices
+     * dados
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public boolean sonAdyacentes(T v1, T v2) throws GraphException {
         return sonAdyacentesIndices(numVertice(v1), numVertice(v2));
     }
@@ -98,10 +152,27 @@ public class GrafoP<T> {
         return matrizAdy[v1][v2] > 0;
     }
 
+    /**
+     * Devuelve el peso de la arista entre los vértices dados
+     *
+     * @param v1 El vértice de origen de la arista
+     * @param v2 El vértice de destino de la arista
+     * @return el peso de la arista entre los vértices dados
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public float getPeso(T v1, T v2) throws GraphException {
         return getPesoIndices(numVertice(v1), numVertice(v2));
     }
 
+    /**
+     * Devuelve el peso de la arista entre los vértices dados, por índices (USAR
+     * CON CUIDADO!)
+     *
+     * @param v1 El índice del vértice de origen de la arista
+     * @param v2 El índice del vértice de destino de la arista
+     * @return el peso de la arista entre los vértices dados
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public float getPesoIndices(int v1, int v2) throws GraphException {
         if (v1 < 0 || v2 < 0) {
             throw new GraphException("Uno de los vértices no existe");
@@ -109,6 +180,14 @@ public class GrafoP<T> {
         return matrizAdy[v1][v2];
     }
 
+    /**
+     * Devuelve una lista con los índices de los vértices que son adyacentes al
+     * vértice dado
+     *
+     * @param v El vértice al que buscar vértices adyacentes
+     * @return un array que contiene los índices de los vértices adyacentes al
+     * vértice dado
+     */
     public int[] adyacentesIndice(int v) {
         int count = 0;
         for (int i = 0; i < matrizAdy[v].length; i++) {
@@ -126,6 +205,12 @@ public class GrafoP<T> {
         return answer;
     }
 
+    /**
+     * Elimina el vértice dado del grafo, y todas sus aristas
+     *
+     * @param v El vértice a eliminar del grafo
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public void borrarVertice(T v) throws GraphException {
         borrarVerticeIndice(numVertice(v));
     }
@@ -151,6 +236,13 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Elimina el arco dado del grafo
+     *
+     * @param v1 El vértice de origen de la arista
+     * @param v2 El vértice de destino de la arista
+     * @throws GraphException si alguno de los vértices no está en el grafo
+     */
     public void borrarArco(T v1, T v2) throws GraphException {
         borrarArcoIndices(numVertice(v1), numVertice(v2));
     }
@@ -165,6 +257,9 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Imprime la matriz de adyacencia del grafo
+     */
     public void printAdjMat() {
         for (float[] i : matrizAdy) {
             for (float j : i) {
@@ -174,14 +269,27 @@ public class GrafoP<T> {
         }
     }
 
+    /**
+     * Imprime la lista de vértices del grafo
+     */
     public void printVertices() {
         System.out.println(vertices);
     }
 
+    /**
+     * Devuelve el número actual de vértices del grafo
+     *
+     * @return El número de vértices del grafo (no el máximo)
+     */
     public int numVertices() {
         return vertices.size();
     }
 
+    /**
+     * Calcula cuántas aristas con peso mayor a 0 hay en el grafo
+     *
+     * @return El número de aristas en el grafo
+     */
     public int numAristas() {
         int n = 0;
         for (int i = 0; i < maxVertices; i++) {
