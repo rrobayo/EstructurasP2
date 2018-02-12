@@ -92,7 +92,6 @@ public class FXMLDocumentController implements Initializable {
         crearGrafo();
         try {
             ruta = Dijkstra.getRutaMasCorta(visuales, 0, 1);
-            dibujar(ruta, 2);
             simMenu.setDisable(false);
         } catch (GraphException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
