@@ -137,9 +137,9 @@ public class Dijkstra {
         int y = pred[fin];
         float longitud = g.getPesoIndices(x, y);
         while (y != inicio) {
-            longitud += g.getPesoIndices(x, y);
             y = pred[y];
             x = pred[x];
+            longitud += g.getPesoIndices(x, y);
         }
         return longitud;
     }
